@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  backend:
+    image: pateltejas931996/njevcs-backend-pvawnings:latest
+    env_file: ".env"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_CACHE_TYPE=${SPRING_CACHE_TYPE}
+      - USE_REDIS_CACHE=${USE_REDIS_CACHE}
+      - SPRING_REDIS_HOST=${SPRING_REDIS_HOST}
+      - SPRING_REDIS_PORT=${SPRING_REDIS_PORT}
+    volumes:
+      - app_logs:/app/logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - backend_network
+    restart: always
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend_network
+    restart: always
+
+volumes:
+  redis_data:
+  app_logs:
+
+networks:
+  backend_network:
+    driver: bridge

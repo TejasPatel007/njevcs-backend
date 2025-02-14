@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  frontend:
+    image: pateltejas931996/njevcs-frontend-pvawnings:latest
+    volumes:
+      - pvawnings_code:/app
+      - /app/node_modules
+    ports:
+      - "80:80"
+    command: sh -c "NEXT_PUBLIC_BACKEND_API_URL=${NEXT_PUBLIC_BACKEND_API_URL} npm run build && npm start -- -p 80"
+    restart: always
+
+volumes:
+  pvawnings_code:

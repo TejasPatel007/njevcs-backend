@@ -6812,5 +6812,14 @@
 			<where>stores_id = 202</where>
 		</update>
 	</changeSet>
+	
+	<changeSet author="tejaskumar.patel" id="11">
+        <createTable remarks="This table stores the information about configuration." tableName="config">
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

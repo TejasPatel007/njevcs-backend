@@ -30,6 +30,10 @@ public class Constants {
     public static final String LEVEL_2 = "level2";
     public static final String DC_FAST = "dc_fast";
     public static final String ZERO = "0";
+    public static final int HOURS_IN_DAY = 24;
+
+    // https://www.mdpi.com/2032-6653/14/11/308 — Section 7.6 — Fig. 12
+    public static final int EV_STATION_UTILIZATION = 25;
 
     // kWh per EV per day
     // https://www.gencellenergy.com/resources/blog/ev-charging-power-car-electricity-usage/

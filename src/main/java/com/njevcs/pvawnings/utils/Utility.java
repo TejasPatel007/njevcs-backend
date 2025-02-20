@@ -20,12 +20,10 @@ public class Utility {
     public static String getIncomeLevel(Integer income) {
         if (income < Constants.LOW_INCOME_THRESHOLD) {
             return Constants.LOW;
-        } else if (income >= Constants.LOW_INCOME_THRESHOLD && income < Constants.HIGH_INCOME_THRESHOLD) {
+        } else if (income < Constants.HIGH_INCOME_THRESHOLD) {
             return Constants.MEDIUM;
-        } else if (income >= Constants.HIGH_INCOME_THRESHOLD) {
-            return Constants.HIGH;
         } else {
-            return Constants.LOW;
+            return Constants.HIGH;
         }
     }
 
@@ -72,36 +70,30 @@ public class Utility {
     public static String getEvsLevel(Integer evs) {
         if (evs < 100) {
             return Constants.LOW;
-        } else if (evs >= 100 && evs < 500) {
+        } else if (evs < 500) {
             return Constants.MEDIUM;
-        } else if (evs >= 500) {
-            return Constants.HIGH;
         } else {
-            return Constants.LOW;
+            return Constants.HIGH;
         }
     }
 
     public static String getCityEvsLevel(Integer evs) {
         if (evs < 250) {
             return Constants.LOW;
-        } else if (evs >= 250 && evs < 700) {
+        } else if (evs < 700) {
             return Constants.MEDIUM;
-        } else if (evs >= 700) {
-            return Constants.HIGH;
         } else {
-            return Constants.LOW;
+            return Constants.HIGH;
         }
     }
 
     public static String getCountyEvsLevel(Integer evs) {
         if (evs < 4000) {
             return Constants.LOW;
-        } else if (evs >= 4000 && evs < 10000) {
+        } else if (evs < 10000) {
             return Constants.MEDIUM;
-        } else if (evs >= 10000) {
-            return Constants.HIGH;
         } else {
-            return Constants.LOW;
+            return Constants.HIGH;
         }
     }
 
@@ -124,10 +116,10 @@ public class Utility {
         Integer publicChargingDemand = totalEVEnergyDemand * publicChargingReliance / 100;
 
         // Compute total annual public charging station capacity
-        Integer chargingStationCapacity = ((dto.getPublicLevel1() * Constants.LEVEL1_POWER_KW * Constants.LEVEL1_UTILIZATION_HOURS
-                * Constants.LEVEL1_UTILIZATION_CARS)
-                + (dto.getPublicLevel2() * Constants.LEVEL2_POWER_KW * Constants.LEVEL2_UTILIZATION_HOURS * Constants.LEVEL2_UTILIZATION_CARS)
-                + (dto.getPublicDcFast() * Constants.DC_FAST_POWER_KW * Constants.DC_FAST_UTILIZATION_HOURS * Constants.DC_FAST_UTILIZATION_CARS));
+        Integer chargingStationCapacity = ((dto.getPublicLevel1() * Constants.LEVEL1_POWER_KW) + (dto.getPublicLevel2() * Constants.LEVEL2_POWER_KW)
+                + (dto.getPublicDcFast() * Constants.DC_FAST_POWER_KW));
+
+        chargingStationCapacity = chargingStationCapacity * Constants.HOURS_IN_DAY * Constants.EV_STATION_UTILIZATION / 100;
 
         // Compute unmet public charging demand
         Integer unmetEnergyDemand = Math.max(publicChargingDemand - chargingStationCapacity, 0);

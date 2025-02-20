@@ -4,6 +4,7 @@
 package com.njevcs.pvawnings.pojos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.njevcs.pvawnings.utils.Utility;
 
 /**
  * @author patel
@@ -20,6 +21,8 @@ public class DemandCalculationDTO {
     private Integer totalEvs;
 
     private Integer avgIncome;
+
+    private String incomeLevel;
 
     private Integer publicLevel1;
 
@@ -58,6 +61,7 @@ public class DemandCalculationDTO {
         this.county = demandDTO.getCounty();
         this.totalEvs = demandDTO.getTotalEvs();
         this.avgIncome = demandDTO.getAvgIncome();
+        this.incomeLevel = Utility.getIncomeLevel(demandDTO.getAvgIncome());
         this.publicLevel1 = demandDTO.getPublicLevel1();
         this.publicLevel2 = demandDTO.getPublicLevel2();
         this.publicDcFast = demandDTO.getPublicDcFast();
@@ -121,6 +125,20 @@ public class DemandCalculationDTO {
      */
     public void setAvgIncome(Integer avgIncome) {
         this.avgIncome = avgIncome;
+    }
+
+    /**
+     * @return the incomeLevel
+     */
+    public String getIncomeLevel() {
+        return incomeLevel;
+    }
+
+    /**
+     * @param incomeLevel the incomeLevel to set
+     */
+    public void setIncomeLevel(String incomeLevel) {
+        this.incomeLevel = incomeLevel;
     }
 
     /**

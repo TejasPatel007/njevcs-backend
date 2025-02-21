@@ -7,7 +7,6 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +23,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 
 /**
  * @author patel
@@ -55,7 +55,7 @@ public class NRELController {
                     example = "1 Normal Ave.,Montclair, NJ 07043") @RequestParam(required = false) String address) {
 
         SolarResourceResponse response = nrelService.getSolarFluxResource(lat, lon, address);
-        if (!CollectionUtils.isEmpty(response.getErrors())) {
+        if (!StringUtils.isBlank(response.getErrorMessage())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 

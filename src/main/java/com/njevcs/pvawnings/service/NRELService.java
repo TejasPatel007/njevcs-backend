@@ -3,7 +3,6 @@
  */
 package com.njevcs.pvawnings.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +56,7 @@ public class NRELService {
                     .retrieve().bodyToMono(SolarResourceResponse.class).block();
         } else {
             String errorMsg = "Both lat and lon must be specified, or an address must be specified to retrieve the solar flux result.";
-            response.setErrors(Collections.singletonList(errorMsg));
+            response.setErrorMessage(errorMsg);
         }
 
         return response;

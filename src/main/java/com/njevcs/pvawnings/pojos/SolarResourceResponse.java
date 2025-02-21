@@ -26,6 +26,8 @@ public class SolarResourceResponse {
 
     private Outputs outputs;
 
+    private String errorMessage;
+
     /**
      * @return the version
      */
@@ -108,6 +110,20 @@ public class SolarResourceResponse {
      */
     public void setOutputs(Outputs outputs) {
         this.outputs = outputs;
+    }
+
+    /**
+     * @return the errorMessage
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * @param errorMessage the errorMessage to set
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 }

@@ -50,11 +50,9 @@ public class NRELController {
             @Parameter(name = "lat", description = "Latitude", in = ParameterIn.QUERY, array = @ArraySchema(schema = @Schema(type = "string")),
                     example = "40.8645729") @RequestParam(required = false) String lat,
             @Parameter(name = "lon", description = "Longitude", in = ParameterIn.QUERY, array = @ArraySchema(schema = @Schema(type = "string")),
-                    example = "-74.2012681") @RequestParam(required = false) String lon,
-            @Parameter(name = "address", description = "Address", in = ParameterIn.QUERY, array = @ArraySchema(schema = @Schema(type = "string")),
-                    example = "1 Normal Ave.,Montclair, NJ 07043") @RequestParam(required = false) String address) {
+                    example = "-74.2012681") @RequestParam(required = false) String lon) {
 
-        SolarResourceResponse response = nrelService.getSolarFluxResource(lat, lon, address);
+        SolarResourceResponse response = nrelService.getSolarFluxResource(lat, lon);
         if (!StringUtils.isBlank(response.getErrorMessage())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }

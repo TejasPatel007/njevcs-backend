@@ -21,6 +21,7 @@ import com.njevcs.pvawnings.pojos.SolarResourceResponse;
 import com.njevcs.pvawnings.repository.StoresGHIRepository;
 import com.njevcs.pvawnings.repository.StoresRepository;
 import com.njevcs.pvawnings.utils.Constants;
+import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 
 /**
  * @author patel
@@ -41,21 +42,16 @@ public class NRELService {
     @Autowired
     private StoresGHIRepository storesGHIRepository;
 
-    public SolarResourceResponse getSolarFluxResource(String lat, String lon, String address) {
+    public SolarResourceResponse getSolarFluxResource(String lat, String lon) {
         SolarResourceResponse response = new SolarResourceResponse();
 
-        if (Objects.nonNull(address)) {
-            String errorMessage = Constants.NO_DATA + " of Solar Flux for address : " + address;
-            ThreadContext.put(Constants.ERROR_MESSAGE, errorMessage);
-            response = webClient.webClient().get().uri(uriBuilder -> uriBuilder.path("").queryParam("address", address).build()).retrieve()
-                    .bodyToMono(SolarResourceResponse.class).block();
-        } else if (Objects.nonNull(lat) && Objects.nonNull(lon)) {
+        if (!StringUtils.isBlank(lat) && !StringUtils.isBlank(lon)) {
             String errorMessage = Constants.NO_DATA + " of Solar Flux for lat : " + lat + ", lon : " + lon;
             ThreadContext.put(Constants.ERROR_MESSAGE, errorMessage);
             response = webClient.webClient().get().uri(uriBuilder -> uriBuilder.path("").queryParam("lat", lat).queryParam("lon", lon).build())
                     .retrieve().bodyToMono(SolarResourceResponse.class).block();
         } else {
-            String errorMsg = "Both lat and lon must be specified, or an address must be specified to retrieve the solar flux result.";
+            String errorMsg = "Both lat and lon must be specified to retrieve the solar flux result.";
             response.setErrorMessage(errorMsg);
         }
 
@@ -81,9 +77,7 @@ public class NRELService {
 
         allStores.forEach(store -> {
             try {
-                String address = store.getAddress() + Constants.COMMA + Constants.SPACE + store.getZipCode().getCity() + Constants.SPACE
-                        + store.getZipCode().getZipCode() + Constants.SPACE + Constants.STATE_NJ;
-                SolarResourceResponse response = getSolarFluxResource(null, null, address);
+                SolarResourceResponse response = getSolarFluxResource(String.valueOf(store.getLatitude()), String.valueOf(store.getLongitude()));
 
                 if (CollectionUtils.isEmpty(response.getErrors())) {
                     StoresGHI storesGHI;

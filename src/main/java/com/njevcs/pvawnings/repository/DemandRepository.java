@@ -20,7 +20,7 @@ import com.njevcs.pvawnings.pojos.DemandDTO;
 @Transactional
 public interface DemandRepository extends JpaRepository<Evs, String> {
 
-    @Query(value = "SELECT DISTINCT z.city, '' as county, IFNULL(CAST(e.numberOfEvs AS SIGNED), 0) AS totalEvs, IFNULL(CAST(eco.income AS SIGNED), 0) AS avgIncome, "
+    @Query(value = "SELECT DISTINCT z.city, group_concat(distinct z.county) as county, IFNULL(CAST(e.numberOfEvs AS SIGNED), 0) AS totalEvs, IFNULL(CAST(eco.income AS SIGNED), 0) AS avgIncome, "
             + "CAST(evc.public_level1 AS SIGNED) AS publicLevel1, CAST(evc.public_level2 AS SIGNED) AS publicLevel2, "
             + "CAST(evc.public_dc_fast AS SIGNED) AS publicDcFast, CAST(evc.private_level1 AS SIGNED) AS privateLevel1, "
             + "CAST(evc.private_level2 AS SIGNED) AS privateLevel2, CAST(evc.private_dc_fast AS SIGNED) AS privateDcFast, "
@@ -41,7 +41,7 @@ public interface DemandRepository extends JpaRepository<Evs, String> {
             + "WHERE z.city = ?1 GROUP BY z.city", nativeQuery = true)
     DemandDTO getDetailsForCity(String city);
 
-    @Query(value = "SELECT DISTINCT z.city, '' as county, IFNULL(CAST(e.numberOfEvs AS SIGNED), 0) AS totalEvs, IFNULL(CAST(eco.income AS SIGNED), 0) AS avgIncome, "
+    @Query(value = "SELECT DISTINCT z.city, group_concat(distinct z.county) as county, IFNULL(CAST(e.numberOfEvs AS SIGNED), 0) AS totalEvs, IFNULL(CAST(eco.income AS SIGNED), 0) AS avgIncome, "
             + "CAST(evc.public_level1 AS SIGNED) AS publicLevel1, CAST(evc.public_level2 AS SIGNED) AS publicLevel2, "
             + "CAST(evc.public_dc_fast AS SIGNED) AS publicDcFast, CAST(evc.private_level1 AS SIGNED) AS privateLevel1, "
             + "CAST(evc.private_level2 AS SIGNED) AS privateLevel2, CAST(evc.private_dc_fast AS SIGNED) AS privateDcFast, "
